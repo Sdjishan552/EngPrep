@@ -57,7 +57,7 @@ input[type=number]{width:70px;padding:6px;border:1px solid var(--bd);border-radi
 <div id="app"></div>
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-let Q=[],P=[],T='',cur=0,A=[],M=[],V=[],left=0,tm=null,neg=0.25;
+let Q=[],P=[],T='',cur=0,A=[],M=[],V=[],left=0,tm=null;const NEG=0.25,MODES={relaxed:{n:'Relaxed',q:90,w:150,d:'Comfortable time, good for learning'},comp:{n:'Competitive',q:45,w:250,d:'Real bank-exam pace'},tight:{n:'Very Tight',q:32,w:350,d:'Pressure training, faster than exam'}};let mode='comp';
 const SAMPLE=`TITLE: Sample Passage
 PASSAGE:
 Digital payments have transformed how ordinary Indians transact. What began as a convenience for urban consumers has reached small vendors and rural households alike.
@@ -101,17 +101,22 @@ function parse(t){
   if(!qs.length)throw new Error('No valid questions found. Each question needs Q1., options A) B)..., and ANSWER: X');
   return{title:title||'English Mock Test',paras,qs};
 }
-function setup(err){
-  clearInterval(tm);
+function setup(err,keep){
+  clearInterval(tm);const kept=keep&&$('#inp')?$('#inp').value:'';
   $('#app').innerHTML=`<div class="top"><b>Bank English Mock Test</b></div><div class="wrap"><div class="card"><h3 style="margin-top:0">Paste ChatGPT output</h3>
   <textarea id="inp" placeholder="TITLE: ...&#10;PASSAGE:&#10;...&#10;Q1. ...&#10;A) ...&#10;ANSWER: B&#10;EXPLANATION: ..."></textarea>
-  <p>Time (minutes): <input type="number" id="mins" value="10" min="1"> &nbsp; Negative marking: <input type="number" id="neg" value="0.25" step="0.25" min="0"></p>
-  <button class="btn p" onclick="start()">Start Test</button> <button class="btn" onclick="$('#inp').value=SAMPLE">Load sample</button>
+  <div id="modes" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:10px 0">${Object.entries(MODES).map(([k,m])=>`<label class="opt ${mode===k?'sel':''}" style="margin:0" onclick="mode='${k}';setup(null,1)"><i></i><span><b>${m.n}</b><br><small>${m.d}</small></span></label>`).join('')}</div>
+  <p id="est" style="color:var(--mut);margin:6px 0 12px">Paste the text to see the auto time.</p>
+  <p style="color:var(--mut);margin:0 0 12px;font-size:13px">Marking: +1 for correct, -0.25 for wrong, 0 for unanswered.</p>
+  <button class="btn p" onclick="start()">Start Test</button> <button class="btn" onclick="$('#inp').value=SAMPLE;est()">Load sample</button>
   ${err?`<div class="err">${esc(err)}</div>`:''}</div></div>`;
+  const i=$('#inp');i.value=kept;i.oninput=est;est();
 }
+function calc(d){const m=MODES[mode],w=d.paras.join(' ').split(/\s+/).filter(Boolean).length;return Math.max(60,Math.ceil((d.qs.length*m.q+w/m.w*60)/60)*60)}
+function est(){const e=$('#est');try{const d=parse($('#inp').value);e.textContent=d.qs.length+' questions detected | Time allotted: '+calc(d)/60+' minutes ('+MODES[mode].n+')'}catch(x){e.textContent='Paste the text to see the auto time.'}}
 function start(){
   try{const d=parse($('#inp').value);T=d.title;P=d.paras;Q=d.qs}catch(e){return setup(e.message)}
-  neg=parseFloat($('#neg').value)||0;left=(parseInt($('#mins').value)||10)*60;
+  left=calc({paras:P,qs:Q});
   A=Q.map(()=>-1);M=Q.map(()=>false);V=Q.map(()=>false);cur=0;V[0]=true;
   tm=setInterval(()=>{left--;const t=$('#tm');if(t)t.textContent=fmt(left);if(left<=0)finish()},1000);draw();
 }
@@ -142,7 +147,7 @@ function ask(){
 function finish(){
   clearInterval(tm);let c=0,w=0,u=0;
   Q.forEach((q,i)=>{if(A[i]<0)u++;else if(A[i]===q.a)c++;else w++});
-  const sc=(c-w*neg).toFixed(2);
+  const sc=(c-w*NEG).toFixed(2);
   $('#app').innerHTML=`<div class="top"><b>${esc(T)} - Result</b></div><div class="wrap"><div class="card"><div class="res"><div><b>${sc}</b>Score / ${Q.length}</div><div><b>${c}</b>Correct</div><div><b>${w}</b>Wrong</div><div><b>${u}</b>Skipped</div></div>
   <p style="margin-bottom:0"><button class="btn p" onclick="setup()">New Test</button></p></div>
   <div class="card rv"><h3 style="margin-top:0">Review</h3>${Q.map((q,i)=>`<div style="margin-bottom:16px"><div class="qn">Q${i+1}. ${esc(q.q)}</div>
