@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bank English Mock Test</title>
+<style>
+:root{--bg:#f3f6fa;--card:#fff;--bd:#d3dce8;--pri:#1f6fb2;--pri2:#e8f1fa;--txt:#1d2936;--mut:#6a7a8c;--ok:#3aa85b;--no:#e0553d;--mk:#7e57c2;--nv:#e2e8f0;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);color:var(--txt);font:15px/1.55 Arial,Helvetica,sans-serif}
+button{font:inherit;cursor:pointer}
+.top{background:var(--card);border-bottom:2px solid var(--pri);padding:8px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.top b{color:var(--pri);font-size:17px}
+.cand{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:13px}
+.av{width:30px;height:30px;border-radius:50%;background:var(--pri2);border:1px solid var(--bd);display:grid;place-items:center;color:var(--pri);font-weight:700}
+.sub{background:var(--pri2);border-bottom:1px solid var(--bd);padding:6px 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px;flex-wrap:wrap;gap:6px}
+.tab{background:var(--pri);color:#fff;padding:4px 14px;border-radius:3px}
+.timer{font-weight:700}.timer span{background:#fff;border:1px solid var(--bd);padding:3px 10px;border-radius:3px;color:var(--no);font-variant-numeric:tabular-nums}
+.main{display:grid;grid-template-columns:1fr 1fr 230px;gap:10px;padding:10px;height:calc(100vh - 150px);min-height:420px}
+.pane{background:var(--card);border:1px solid var(--bd);border-radius:4px;overflow:auto;padding:14px}
+.pane h3{margin:0 0 10px;font-size:14px;color:var(--pri);border-bottom:1px solid var(--bd);padding-bottom:6px}
+.pass p{margin:0 0 12px;text-align:justify}
+.qn{font-weight:700;margin-bottom:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border:1px solid var(--bd);border-radius:4px;margin:8px 0;cursor:pointer;background:#fff}
+.opt:hover{background:var(--pri2)}
+.opt.sel{border-color:var(--pri);background:var(--pri2)}
+.opt i{flex:none;width:18px;height:18px;border-radius:50%;border:2px solid var(--mut);margin-top:2px}
+.opt.sel i{border-color:var(--pri);background:radial-gradient(var(--pri) 45%,transparent 50%)}
+.side{display:flex;flex-direction:column;gap:10px}
+.leg{font-size:12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;color:var(--mut)}
+.leg div{display:flex;align-items:center;gap:6px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.n{height:36px;border:1px solid var(--bd);background:var(--nv);border-radius:4px;color:var(--txt);font-weight:700;position:relative}
+.n.v{background:var(--no);color:#fff;border-color:var(--no)}
+.n.a{background:var(--ok);color:#fff;border-color:var(--ok)}
+.n.m{background:var(--mk);color:#fff;border-radius:50%;border-color:var(--mk)}
+.n.am::after{content:"";position:absolute;right:2px;bottom:2px;width:9px;height:9px;background:var(--ok);border-radius:50%;border:1px solid #fff}
+.n.cur{outline:2px solid var(--pri);outline-offset:1px}
+.sw{width:18px;height:18px;border-radius:3px;background:var(--nv);border:1px solid var(--bd);display:inline-block}
+.bar{position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--bd);padding:8px 14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{padding:8px 16px;border-radius:3px;border:1px solid var(--bd);background:#fff;color:var(--txt)}
+.btn.p{background:var(--pri);color:#fff;border-color:var(--pri)}
+.btn.m{background:var(--pri2);border-color:var(--pri);color:var(--pri)}
+.btn.s{background:var(--ok);color:#fff;border-color:var(--ok);margin-left:auto}
+.wrap{max-width:820px;margin:20px auto;padding:0 14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:18px;margin-bottom:14px}
+textarea{width:100%;min-height:260px;border:1px solid var(--bd);border-radius:4px;padding:10px;font:13px/1.5 Consolas,monospace;background:#fff;color:var(--txt)}
+input[type=number]{width:70px;padding:6px;border:1px solid var(--bd);border-radius:3px}
+.err{color:var(--no);margin-top:8px}
+.ov{position:fixed;inset:0;background:rgba(30,41,54,.35);display:grid;place-items:center;z-index:9}
+.ov .card{max-width:380px;margin:14px}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;text-align:center}
+.res div{background:var(--pri2);border-radius:6px;padding:10px}.res b{display:block;font-size:22px;color:var(--pri)}
+.rv .g{color:var(--ok);font-weight:700}.rv .b{color:var(--no);font-weight:700}
+.ex{background:#f7f9fc;border-left:3px solid var(--pri);padding:6px 10px;margin-top:6px;font-size:14px}
+@media(max-width:860px){.main{grid-template-columns:1fr;height:auto}.pane{max-height:none}.pass{max-height:260px}}
+</style></head><body>
+<div id="app"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let Q=[],P=[],T='',cur=0,A=[],M=[],V=[],left=0,tm=null,neg=0.25;
+const SAMPLE=`TITLE: Sample Passage
+PASSAGE:
+Digital payments have transformed how ordinary Indians transact. What began as a convenience for urban consumers has reached small vendors and rural households alike.
+
+However, experts caution that rapid adoption must be matched by robust security and consumer awareness. Fraud complaints have risen sharply.
+
+Q1. What is the central idea of the passage?
+A) Digital payments are only for cities
+B) Digital payments have spread widely but need better security
+C) Fraud has ended digital payments
+D) Rural households reject technology
+E) Vendors prefer cash
+ANSWER: B
+EXPLANATION: The passage notes wide reach and warns about security.
+
+Q2. Choose the synonym of CAUTION as used in the passage.
+A) Warn
+B) Praise
+C) Ignore
+D) Hide
+E) Delay
+ANSWER: A
+EXPLANATION: Caution means to warn.`;
+function parse(t){
+  t=t.replace(/\r/g,'').replace(/\*\*/g,'');
+  let title='',pass=[],qs=[],q=null,st='pre',last=null;
+  for(const raw of t.split('\n')){
+    const l=raw.trim();let m;
+    if((m=l.match(/^TITLE\s*:\s*(.*)/i))){title=m[1];continue}
+    if((m=l.match(/^PASSAGE\s*:\s*(.*)/i))){st='pass';if(m[1])pass.push(m[1]);continue}
+    if((m=l.match(/^Q\.?\s*(\d+)\s*[.):]\s*(.*)/i))){q={q:m[2],o:[],a:-1,e:''};qs.push(q);st='q';last='q';continue}
+    if(st==='pass'){pass.push(l);continue}
+    if(st!=='q'||!l)continue;
+    if((m=l.match(/^\(?([A-E])[.)]\s*(.*)/i))&&(q.a<0)&&!q.e){q.o.push(m[2]);last='o';continue}
+    if((m=l.match(/^(?:CORRECT\s*)?(?:ANSWER|ANS)\s*[:\-]\s*\(?([A-E])/i))){q.a=m[1].toUpperCase().charCodeAt(0)-65;last='a';continue}
+    if((m=l.match(/^(?:EXPLANATION|EXP)\s*[:\-]\s*(.*)/i))){q.e=m[1];last='e';continue}
+    if(last==='q')q.q+=' '+l;else if(last==='o')q.o[q.o.length-1]+=' '+l;else if(last==='e')q.e+=' '+l;
+  }
+  const paras=pass.join('\n').split(/\n\s*\n/).map(s=>s.replace(/\n/g,' ').trim()).filter(Boolean);
+  qs=qs.filter(x=>x.o.length>=2&&x.a>=0&&x.a<x.o.length);
+  if(!qs.length)throw new Error('No valid questions found. Each question needs Q1., options A) B)..., and ANSWER: X');
+  return{title:title||'English Mock Test',paras,qs};
+}
+function setup(err){
+  clearInterval(tm);
+  $('#app').innerHTML=`<div class="top"><b>Bank English Mock Test</b></div><div class="wrap"><div class="card"><h3 style="margin-top:0">Paste ChatGPT output</h3>
+  <textarea id="inp" placeholder="TITLE: ...&#10;PASSAGE:&#10;...&#10;Q1. ...&#10;A) ...&#10;ANSWER: B&#10;EXPLANATION: ..."></textarea>
+  <p>Time (minutes): <input type="number" id="mins" value="10" min="1"> &nbsp; Negative marking: <input type="number" id="neg" value="0.25" step="0.25" min="0"></p>
+  <button class="btn p" onclick="start()">Start Test</button> <button class="btn" onclick="$('#inp').value=SAMPLE">Load sample</button>
+  ${err?`<div class="err">${esc(err)}</div>`:''}</div></div>`;
+}
+function start(){
+  try{const d=parse($('#inp').value);T=d.title;P=d.paras;Q=d.qs}catch(e){return setup(e.message)}
+  neg=parseFloat($('#neg').value)||0;left=(parseInt($('#mins').value)||10)*60;
+  A=Q.map(()=>-1);M=Q.map(()=>false);V=Q.map(()=>false);cur=0;V[0]=true;
+  tm=setInterval(()=>{left--;const t=$('#tm');if(t)t.textContent=fmt(left);if(left<=0)finish()},1000);draw();
+}
+const fmt=s=>{s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function cls(i){let c='n';const a=A[i]>=0;if(M[i]){c+=' m'+(a?' am':'')}else if(a)c+=' a';else if(V[i])c+=' v';if(i===cur)c+=' cur';return c}
+function draw(){
+  const q=Q[cur];
+  $('#app').innerHTML=`<div class="top"><b>${esc(T)}</b><div class="cand"><div class="av">C</div>Candidate Name</div></div>
+  <div class="sub"><span class="tab">English Language</span><span class="timer">Time Left: <span id="tm">${fmt(left)}</span></span></div>
+  <div class="main">
+  <div class="pane pass"><h3>Passage</h3>${P.map(p=>`<p>${esc(p)}</p>`).join('')||'<p>(No passage provided)</p>'}</div>
+  <div class="pane"><h3>Question ${cur+1} of ${Q.length}</h3><div class="qn">${esc(q.q)}</div>
+  ${q.o.map((o,i)=>`<div class="opt ${A[cur]===i?'sel':''}" onclick="pick(${i})"><i></i><span>${esc(o)}</span></div>`).join('')}</div>
+  <div class="pane side"><h3>Question Palette</h3><div class="grid">${Q.map((_,i)=>`<button class="${cls(i)}" onclick="go(${i})">${i+1}</button>`).join('')}</div>
+  <div class="leg"><div><span class="sw" style="background:var(--ok)"></span>Answered</div><div><span class="sw" style="background:var(--no)"></span>Not Answered</div><div><span class="sw"></span>Not Visited</div><div><span class="sw" style="background:var(--mk);border-radius:50%"></span>Marked</div></div></div></div>
+  <div class="bar"><button class="btn m" onclick="mark()">Mark for Review &amp; Next</button><button class="btn" onclick="A[cur]=-1;draw()">Clear Response</button><button class="btn p" onclick="save()">Save &amp; Next</button><button class="btn" onclick="go(cur-1)">&lt; Back</button><button class="btn s" onclick="ask()">Submit</button></div>`;
+}
+function pick(i){A[cur]=i;draw()}
+function go(i){if(i<0||i>=Q.length)return;cur=i;V[i]=true;draw()}
+function save(){M[cur]=false;go(cur<Q.length-1?cur+1:cur)}
+function mark(){M[cur]=true;go(cur<Q.length-1?cur+1:cur)}
+function ask(){
+  const a=A.filter(x=>x>=0).length,mk=M.filter(Boolean).length;
+  const d=document.createElement('div');d.className='ov';d.id='ov';
+  d.innerHTML=`<div class="card"><h3 style="margin-top:0">Submit test?</h3><p>Answered: ${a}<br>Not answered: ${Q.length-a}<br>Marked for review: ${mk}</p><button class="btn p" onclick="finish()">Yes, Submit</button> <button class="btn" onclick="$('#ov').remove()">Cancel</button></div>`;
+  document.body.appendChild(d);
+}
+function finish(){
+  clearInterval(tm);let c=0,w=0,u=0;
+  Q.forEach((q,i)=>{if(A[i]<0)u++;else if(A[i]===q.a)c++;else w++});
+  const sc=(c-w*neg).toFixed(2);
+  $('#app').innerHTML=`<div class="top"><b>${esc(T)} - Result</b></div><div class="wrap"><div class="card"><div class="res"><div><b>${sc}</b>Score / ${Q.length}</div><div><b>${c}</b>Correct</div><div><b>${w}</b>Wrong</div><div><b>${u}</b>Skipped</div></div>
+  <p style="margin-bottom:0"><button class="btn p" onclick="setup()">New Test</button></p></div>
+  <div class="card rv"><h3 style="margin-top:0">Review</h3>${Q.map((q,i)=>`<div style="margin-bottom:16px"><div class="qn">Q${i+1}. ${esc(q.q)}</div>
+  ${q.o.map((o,j)=>`<div>${'ABCDE'[j]}) ${esc(o)} ${j===q.a?'<span class="g">✔ Correct</span>':''}${j===A[i]&&j!==q.a?'<span class="b">✘ Your answer</span>':''}${j===A[i]&&j===q.a?'<span class="g">(Your answer)</span>':''}</div>`).join('')}
+  ${q.e?`<div class="ex">${esc(q.e)}</div>`:''}</div>`).join('')}</div></div>`;
+}
+setup();
+</script></body></html>
